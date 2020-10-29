@@ -1,0 +1,24 @@
+<nav id="nav">
+  <img id="logo" src="{{ url_for('static', filename='csflix.png') }}" />
+
+  <h2 id="nav-header">
+    {% if 'username' in session %} Hello, {{ session['username'] }} {%
+    endif %}
+  </h2>
+  <a class="btn-nav" href="{{ url_for('home_bp.home') }}">Home</a>
+  <a class="btn-nav" href="{{ url_for('authentication_bp.register') }}">Register</a>
+  <a class="btn-nav" href="{{ url_for('authentication_bp.login') }}">Login</a>
+  <a class="btn-nav" href="{{ url_for('authentication_bp.logout') }}">Logout</a>
+
+  <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('news_bp.all_movies', page_number=0) }}">
+        Browse movies
+      </a>
+    </h3>
+  </div>
+
+  <div id="nav-footer">
+    Cbur168 Software Development Methodologies
+  </div>
+</nav>

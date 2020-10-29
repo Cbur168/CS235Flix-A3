@@ -1,0 +1,4 @@
+id,author-id,article-id,review-text,rating
+1,2,1,"Too many reviews",4
+2,1,1,"Damn good",6
+3,3,1,"Wow bad",3

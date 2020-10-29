@@ -1,0 +1,101 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<main id="main">
+    <header id="article-header">
+        <h1>{{ articles_title }}</h1>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+      <div class="search">
+        <form action="{{url_for('news_bp.all_movies', page_number=0)}}">
+            <div class="set-filters">
+                Filter Movies By: <br>
+                <input type="radio" name="sort" id="movies" value="title" class="filter"> Movies
+                <input type="radio" name="sort" id="genres" value="genres" class="filter"> Genres
+                <input type="radio" name="sort" id="actors" value="actors" class="filter"> Actors
+                <input type="radio" name="sort" id="director" value="director" class="filter"> Directors
+            </div>
+            <input class="form-control" name="search" placeholder="Browse Movies.." autocomplete="off" autofocus="autofocus" type="text">
+            <button class="btn-general" type="submit">Search</button>
+        </form>
+      </div>
+      <br><br>
+      <hr class="bar">
+      
+    </header>
+    <h2>
+        {% if 'no_results' in session %} {{session['no_results']}} {% endif %}
+    </h2>
+    <nav style="clear:both">
+            <div style="float:left">
+                {% if first_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{first_article_url}}'">First</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>First</button>
+                {% endif %}
+                {% if prev_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{prev_article_url}}'">Previous</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Previous</button>
+                {% endif %}
+            </div>
+            <div style="float:right">
+                {% if next_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{next_article_url}}'">Next</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Next</button>
+                {% endif %}
+                {% if last_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{last_article_url}}'">Last</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Last</button>
+                {% endif %}
+            </div>
+        </nav>
+
+    {% for article in articles %}
+    <article id="article">
+        <a href="{{article.hyperlink}}">
+            <img class="poster" src="{{article.image_hyperlink}}" alt="Movie Poster">
+        </a>
+        <h2>{{article.title}}</h2>
+        <p>{{article.description}}</p>
+        <p>Metascore: {{article.metascore}}  Rating: {{article.rating}}/10</p>
+        <p>Gross Revenue: {{article.revenue}} million</p>
+        <p>{{article.votes}} Votes</p>
+    </article>
+    <hr class="bar">
+    {% endfor %}
+
+    <footer>
+        <nav style="clear:both">
+            <div style="float:left">
+                {% if first_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{first_article_url}}'">First</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>First</button>
+                {% endif %}
+                {% if prev_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{prev_article_url}}'">Previous</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Previous</button>
+                {% endif %}
+            </div>
+            <div style="float:right">
+                {% if next_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{next_article_url}}'">Next</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Next</button>
+                {% endif %}
+                {% if last_article_url is not none %}
+                    <button class="btn-general" onclick="location.href='{{last_article_url}}'">Last</button>
+                {% else %}
+                    <button class="btn-general-disabled" disabled>Last</button>
+                {% endif %}
+            </div>
+        </nav>
+    </footer>
+</main>
+{% endblock %}
