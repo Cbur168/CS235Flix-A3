@@ -6,7 +6,7 @@ from csflix.adapters import memory_repository
 from csflix.adapters.memory_repository import MemoryRepository
 
 
-TEST_DATA_PATH = "C:\\Bullshit\\CS235Flix-A2\\tests\\data"
+TEST_DATA_PATH = "C:\\CS235Flix-A2\\tests\\data"
 #Please replace to test
 #TEST_DATA_PATH = os.path.join('C:', os.sep, 'Users', 'cbur168', 'Documents', 'Python dev', 'csflix', 'tests', 'data')
 import os
@@ -22,8 +22,8 @@ from csflix.adapters.memory_repository import MemoryRepository
 
 
 #TODO: You have to adapt these paths to your file structure
-TEST_DATA_PATH_MEMORY = "C:\\Bullshit\\CS235Flix-A3\\CS235Flix-A3\\tests\\data\\memory"
-TEST_DATA_PATH_DATABASE = "C:\\Bullshit\\CS235Flix-A3\\CS235Flix-A3\\tests\\data\\database"
+TEST_DATA_PATH_MEMORY = "C:\\CS235Flix-A3\\CS235Flix-A3\\tests\\data\\memory"
+TEST_DATA_PATH_DATABASE = "C:\\CS235Flix-A3\\CS235Flix-A3\\tests\\data\\database"
 
 
 TEST_DATABASE_URI_IN_MEMORY = 'sqlite://'

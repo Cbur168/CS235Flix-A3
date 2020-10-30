@@ -5,31 +5,34 @@ import pytest
 from csflix.adapters.database_repository import SqlAlchemyRepository
 from csflix.domain.model import User, Movie as Article, Tag, Review as Comment, make_comment
 from csflix.adapters.repository import RepositoryException
-"""
+
 def test_repository_can_add_a_user(session_factory):
     repo = SqlAlchemyRepository(session_factory)
 
     user = User('Dave', '123456789')
+    user.username = 'Dave'
+    user.password = '123456789'
     repo.add_user(user)
-
-    repo.add_user(User('Martin', '123456789'))
 
     user2 = repo.get_user('Dave')
 
-    assert user2 == user and user2 is user
+    assert user2 == user 
 
 def test_repository_can_retrieve_a_user(session_factory):
     repo = SqlAlchemyRepository(session_factory)
 
     user = repo.get_user('fmercury')
-    assert user == User('fmercury', '8734gfe2058v')
+    user2 = User('fmercury', '8734gfe2058v')
+    user2.username = 'fmercury'
+    user2.password = '8734gfe2058v'
+    assert user == user2
 
 def test_repository_does_not_retrieve_a_non_existent_user(session_factory):
     repo = SqlAlchemyRepository(session_factory)
 
     user = repo.get_user('prince')
     assert user is None
-"""
+
 def test_repository_can_retrieve_article_count(session_factory):
     repo = SqlAlchemyRepository(session_factory)
 
@@ -198,4 +201,3 @@ def test_can_retrieve_an_article_and_add_a_comment_to_it(session_factory):
 
     assert comment.user_id == 1
     assert comment.article_id == 5
-

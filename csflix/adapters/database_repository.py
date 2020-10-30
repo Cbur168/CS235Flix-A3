@@ -68,7 +68,11 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def get_user(self, username) -> User:
         user = None
-        user = self._session_cm.session.query(User).filter_by(username=username).one()
+        try:
+            user = self._session_cm.session.query(User).filter_by(username=username).one()
+        except NoResultFound:
+            # Ignore any exception and return None.
+            pass
 
         return user
 
@@ -88,7 +92,7 @@ class SqlAlchemyRepository(AbstractRepository):
         return article
 
     def split_movies(self, max_per_page = 5, filter = "", tag = 'title'):
-        tags = {None: lambda x: x.title, 'title' : lambda x: x.title, 'genres' : lambda x: x.genres, 'actors' : lambda x: x.actors, 'director' : lambda x: x.director.director}
+        tags = {None: lambda x: x.title, 'title' : lambda x: x.title, 'genres' : lambda x: x.genres, 'actors' : lambda x: x.actors, 'director' : lambda x: x.director}
         func = tags[tag]
         filtered_articles = self._session_cm.session.query(Article).filter(func(Article).contains(filter)).all()
         self._articles_by_page = [filtered_articles[i:i + max_per_page] for i in range(0, len(filtered_articles), max_per_page)]
