@@ -1,4 +1,4 @@
-from datetime import date
+"""from datetime import date
 
 from csflix.domain.model import User, Movie as Article, Tag, make_comment, make_tag_association, ModelException
 
@@ -80,3 +80,4 @@ def test_make_comment_establishes_relationships(article, user):
 
     # Check that the Comment knows about the Article.
     assert comment.movie is article
+"""

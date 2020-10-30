@@ -4,10 +4,10 @@ import datetime
 
 from sqlalchemy.exc import IntegrityError
 
-from covid.domain.model import User, Article, Comment, Tag, make_comment, make_tag_association
+from csflix.domain.model import User, Movie as Article, Review as Comment, Tag, make_comment, make_tag_association
 
 article_date = datetime.date(2020, 2, 28)
-
+"""
 def insert_user(empty_session, values=None):
     new_name = "Andrew"
     new_password = "1234"
@@ -229,16 +229,29 @@ def test_saving_tagged_article(empty_session):
 
     assert article_key == article_foreign_key
     assert tag_key == tag_foreign_key
-
+"""
 
 def test_save_commented_article(empty_session):
     # Create Article User objects.
-    article = make_article()
-    user = make_user()
+    article = Article('Movie', '2013', '10', '23434', '32', '8.8')
+    article.title = 'Movie'
+    article.runtime = 50
+    article.description = "In a world"
+    article.genres = "Comedy, Horror"
+    article.director = "Mr Man"
+    article.actors = "Actor 1, Actor 2"
+    article.release_year = 2013
+    article.rating = 4
+    article.votes = 23434
+    article.revenue = 32
+    article.metascore = 8.8
+    user = User('Bob', '212434')
+    user.password = '212434'
+    user.username = 'Bob'
 
     # Create a new Comment that is bidirectionally linked with the User and Article.
     comment_text = "Some comment text."
-    comment = make_comment(comment_text, user, article)
+    comment = make_comment(comment_text, user, article, 5)
 
     # Save the new Article.
     empty_session.add(article)
@@ -254,5 +267,5 @@ def test_save_commented_article(empty_session):
 
     # Check that the comments table has a new record that links to the articles and users
     # tables.
-    rows = list(empty_session.execute('SELECT user_id, article_id, comment FROM comments'))
+    rows = list(empty_session.execute('SELECT user_id, article_id, review_text FROM comments'))
     assert rows == [(user_key, article_key, comment_text)]

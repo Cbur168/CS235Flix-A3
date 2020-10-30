@@ -1,6 +1,6 @@
-from sqlalchemy import select, inspect
+"""from sqlalchemy import select, inspect
 
-from covid.adapters.orm import metadata
+from csflix.adapters.orm import metadata
 
 def test_database_populate_inspect_table_names(database_engine):
 
@@ -83,3 +83,4 @@ def test_database_populate_select_all_articles(database_engine):
         assert all_articles[nr_articles-1] == (177, 'Covid 19 coronavirus: Kiwi mum on the heartbreak of losing her baby in lockdown')
 
 
+"""

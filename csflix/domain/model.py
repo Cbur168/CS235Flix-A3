@@ -6,15 +6,9 @@ import urllib, json
 class User:
     
     def __init__(self, username, password):
-        if type(username) == str:
-            self.__username = username.strip().lower()
-        else:
-            self.__username = None
-        
-        if type(password) == str:
-            self.__password = password
-        else:
-            self.__password = None
+        self.__username = username.strip().lower()
+
+        self.__password = password
 
         self.__watched_movies = []
         self.__reviews = []
@@ -74,13 +68,13 @@ class User:
         return f"<User {self.username}>"
     
     def __eq__(self,other):
-        return self.__username == other.__username
+        return self.username == other.username
     
     def __lt__(self, other):
-        return self.__username < other.__username
+        return self.username < other.username
     
     def __hash__(self):
-        return hash((self.__username, self.__password))
+        return hash((self.username, self.password))
     
     def watch_movie(self, movie):
         if type(movie) != Movie:
@@ -115,19 +109,19 @@ class Actor:
         return f"<Actor {self.__actor_full_name}>"
 
     def __eq__(self, other):
-        return self.__actor_full_name == other.__actor_full_name
+        return self.actor_full_name == other.actor_full_name
     
     def __lt__(self, other):
-        return self.__actor_full_name < other.__actor_full_name
+        return self.actor_full_name < other.actor_full_name
     
     def __hash__(self):
-        return hash(self.__actor_full_name)
+        return hash(self.actor_full_name)
     
     def add_actor_colleague(self, colleague):
         self.__colleagues.append(colleague)
 
     def check_if_this_actor_worked_with(self, colleague):
-        return colleague in self.__colleagues
+        return colleague in self.colleagues
 
 class Director:
 
@@ -145,13 +139,13 @@ class Director:
         return f"<Director {self.__director_full_name}>"
 
     def __eq__(self, other):
-        return self.__director_full_name == other.__director_full_name
+        return self.director_full_name == other.director_full_name
     
     def __lt__(self, other):
-        return self.__director_full_name < other.__director_full_name
+        return self.director_full_name < other.director_full_name
     
     def __hash__(self):
-        return hash(self.__director_full_name)
+        return hash(self.director_full_name)
 
 class Genre:
 
@@ -166,16 +160,16 @@ class Genre:
         return self.__genre_name
 
     def __repr__(self):
-        return f"<Genre {self.__genre_name}>"
+        return f"<Genre {self.genre_name}>"
 
     def __eq__(self, other):
-        return self.__genre_name == other.__genre_name
+        return self.genre_name == other.genre_name
     
     def __lt__(self, other):
-        return self.__genre_name < other.__genre_name
+        return self.genre_name < other.genre_name
     
     def __hash__(self):
-        return hash(self.__genre_name)
+        return hash(self.genre_name)
 
 class Movie:
 
@@ -318,12 +312,12 @@ class Movie:
         return self.__title == other.__title and self.__release_year == other.__release_year
     
     def __lt__(self, other):
-        if self.__title == other.__title:
-            return self.__release_year < other.__release_year
-        return self.__title < other.__title
+        if self.title == other.title:
+            return self.release_year < other.release_year
+        return self.title < other.title
     
     def __hash__(self):
-        return hash((self.__title, self.__release_year))
+        return hash((self.title, self.release_year))
     
     def add_actor(self, actor):
         if type(actor) == Actor:
@@ -362,10 +356,10 @@ class Review:
         self.__user_id = None
     
     def __repr__(self):
-        return f"<Review {self.__movie}>"
+        return f"<Review {self.movie}>"
     
     def __eq__(self, other):
-        return self.__movie == other.__movie and self.__review_text == other.__review_text and self.__rating == other.__rating and self.__timestamp == other.__timestamp
+        return self.article_id == other.article_id and self.review_text == other.review_text and self.rating == other.rating
 
     @property 
     def user(self):

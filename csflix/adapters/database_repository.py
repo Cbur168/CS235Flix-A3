@@ -68,11 +68,7 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def get_user(self, username) -> User:
         user = None
-        try:
-            user = self._session_cm.session.query(User).filter_by(username=username).one()
-        except NoResultFound:
-            # Ignore any exception and return None.
-            pass
+        user = self._session_cm.session.query(User).filter_by(username=username).one()
 
         return user
 
@@ -113,7 +109,7 @@ class SqlAlchemyRepository(AbstractRepository):
         return article
 
     def get_last_article(self):
-        article = self._session_cm.session.query(Article).order_by(desc(Article._id)).first()
+        article = self._session_cm.session.query(Article).order_by(desc(Article.id)).first()
         return article
 
     def get_articles_by_id(self, id_list):

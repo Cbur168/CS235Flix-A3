@@ -1,4 +1,4 @@
-from datetime import date, datetime
+"""from datetime import date, datetime
 from typing import List
 
 import pytest
@@ -136,3 +136,4 @@ def test_repository_does_not_add_a_comment_without_an_article_properly_attached(
 
 def test_repository_can_retrieve_comments(in_memory_repo):
     assert len(in_memory_repo.get_comments()) == 3
+"""
