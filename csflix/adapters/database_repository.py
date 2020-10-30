@@ -173,7 +173,7 @@ class SqlAlchemyRepository(AbstractRepository):
         return comments
 
     def add_comment(self, comment: Comment):
-      #  super().add_comment(comment)
+        super().add_comment(comment)
         with self._session_cm as scm:
             scm.session.add(comment)
             scm.commit()

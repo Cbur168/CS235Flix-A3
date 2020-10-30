@@ -65,7 +65,7 @@ class User:
             self.__watch_time = time
     
     def __repr__(self):
-        return f"<User {self.username}>"
+        return f"{self.username}"
     
     def __eq__(self,other):
         return self.username == other.username
@@ -356,7 +356,7 @@ class Review:
         self.__user_id = None
     
     def __repr__(self):
-        return f"<Review {self.movie}>"
+        return f"{self.movie}"
     
     def __eq__(self, other):
         return self.article_id == other.article_id and self.review_text == other.review_text and self.rating == other.rating
@@ -365,13 +365,6 @@ class Review:
     def user(self):
         return self.__user
 
-    @property
-    def article_id(self):
-        return self.movie.id
-    
-    @property
-    def user_id(self):
-        return self.__user_id
 
     @property
     def movie(self):
@@ -444,7 +437,7 @@ class ModelException(Exception):
 def make_comment(comment_text: str, user: User, article: Movie, rating : str):
     comment = Review(article, user, comment_text, rating)
     comment.movie = article
-    comment.user = user.username
+    comment.user = user
     comment.review_text = comment_text
     comment.rating = rating
     user.add_review(comment)

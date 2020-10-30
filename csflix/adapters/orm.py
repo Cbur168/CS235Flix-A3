@@ -62,8 +62,8 @@ def map_model_to_tables():
     })
     mapper(model.Review, comments, properties={
         'review_text': comments.c.review_text,
-        'user_id' : comments.c.user_id,
-        'article_id' : comments.c.article_id,
+        'user' : relationship(model.User, foreign_keys=comments.c.user_id),
+        'movie' :  relationship(model.Movie, foreign_keys=comments.c.article_id),
         'rating': comments.c.rating
     })
     articles_mapper = mapper(model.Movie, articles, properties={
