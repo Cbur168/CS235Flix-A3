@@ -69,7 +69,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_user(self, username) -> User:
         user = None
         try:
-            user = self._session_cm.session.query(User).filter_by(_username=username).one()
+            user = self._session_cm.session.query(User).filter_by(username=username).one()
         except NoResultFound:
             # Ignore any exception and return None.
             pass
@@ -84,22 +84,26 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_article(self, id: int) -> Article:
         article = None
         try:
-            article = self._session_cm.session.query(Article).filter(Article._id == id).one()
+            article = self._session_cm.session.query(Article).filter(Article.id == id).one()
         except NoResultFound:
             # Ignore any exception and return None.
             pass
 
         return article
 
-    def get_articles_by_date(self, target_date: date) -> List[Article]:
-        if target_date is None:
-            articles = self._session_cm.session.query(Article).all()
-            return articles
-        else:
-            # Return articles matching target_date; return an empty list if there are no matches.
-            articles = self._session_cm.session.query(Article).filter(Article._date == target_date).all()
-            return articles
+    def split_movies(self, max_per_page = 5, filter = "", tag = 'title'):
+        tags = {None: lambda x: x.title, 'title' : lambda x: x.title, 'genres' : lambda x: x.genres, 'actors' : lambda x: x.actors, 'director' : lambda x: x.director.director}
+        func = tags[tag]
+        filtered_articles = self._session_cm.session.query(Article).filter(func(Article).contains(filter)).all()
+        self._articles_by_page = [filtered_articles[i:i + max_per_page] for i in range(0, len(filtered_articles), max_per_page)]
 
+    def get_all_movies(self, n, search, tag) -> List[Article]:
+        if search or tag:
+            self.split_movies(filter=search, tag=tag)
+        else:
+            self.split_movies()
+        return self._articles_by_page[int(n)]
+            
     def get_number_of_articles(self):
         number_of_articles = self._session_cm.session.query(Article).count()
         return number_of_articles
@@ -113,7 +117,7 @@ class SqlAlchemyRepository(AbstractRepository):
         return article
 
     def get_articles_by_id(self, id_list):
-        articles = self._session_cm.session.query(Article).filter(Article._id.in_(id_list)).all()
+        articles = self._session_cm.session.query(Article).filter(Article.id.in_(id_list)).all()
         return articles
 
     def get_article_ids_for_tag(self, tag_name: str):
@@ -169,7 +173,7 @@ class SqlAlchemyRepository(AbstractRepository):
         return comments
 
     def add_comment(self, comment: Comment):
-        super().add_comment(comment)
+      #  super().add_comment(comment)
         with self._session_cm as scm:
             scm.session.add(comment)
             scm.commit()
@@ -183,23 +187,11 @@ def article_record_generator(filename: str):
 
         # Read remaining rows from the CSV file.
         for row in reader:
-
             article_data = row
-            article_key = article_data[0]
+            article_key = int(article_data[0])
 
             # Strip any leading/trailing white space from data read.
             article_data = [item.strip() for item in article_data]
-
-            number_of_tags = len(article_data) - 6
-            article_tags = article_data[-number_of_tags:]
-
-            # Add any new tags; associate the current article with tags.
-            for tag in article_tags:
-                if tag not in tags.keys():
-                    tags[tag] = list()
-                tags[tag].append(article_key)
-
-            del article_data[-number_of_tags:]
 
             yield article_data
 
@@ -256,8 +248,8 @@ def populate(engine: Engine, data_path: str):
 
     insert_articles = """
         INSERT INTO articles (
-        id, date, title, first_para, hyperlink, image_hyperlink)
-        VALUES (?, ?, ?, ?, ?, ?)"""
+        id, title, genres, description, director, actors, release_year, runtime, rating, votes, revenue, metascore)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
     cursor.executemany(insert_articles, article_record_generator(os.path.join(data_path, 'news_articles.csv')))
 
     insert_tags = """
@@ -280,7 +272,7 @@ def populate(engine: Engine, data_path: str):
 
     insert_comments = """
         INSERT INTO comments (
-        id, user_id, article_id, comment, timestamp)
+        id, user_id, article_id, review_text, rating)
         VALUES (?, ?, ?, ?, ?)"""
     cursor.executemany(insert_comments, generic_generator(os.path.join(data_path, 'comments.csv')))
 

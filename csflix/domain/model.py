@@ -71,7 +71,7 @@ class User:
             self.__watch_time = time
     
     def __repr__(self):
-        return f"<User {self.__username}>"
+        return f"<User {self.username}>"
     
     def __eq__(self,other):
         return self.__username == other.__username
@@ -91,7 +91,7 @@ class User:
     def add_review(self, review):
         if type(review) != Review:
             return
-        self.__reviews.append(review)
+        self.comments.append(review)
 
 
 class Actor:
@@ -203,6 +203,7 @@ class Movie:
         self._revenue = revenue
         self._metascore = metascore
         self.__url = None
+        
 
     @property
     def number_of_comments(self) -> int:
@@ -226,12 +227,15 @@ class Movie:
 
     @property
     def hyperlink(self) -> str:
-        return f"/movie/{self.__id}"
+        return f"/movie/{self.id}"
 
     @property
     def image_hyperlink(self) -> str:
-        if self.__url:
-            return self.__url
+        try:
+            if self.__url:
+                return self.__url
+        except:
+            self.__url = None
         url = f"https://api.themoviedb.org/3/search/movie?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb&language=en-US&query={urllib.parse.quote(self.title, safe='')}&page=1&primary_release_year={urllib.parse.quote(str(self.release_year), safe='')}"
         response = urllib.request.urlopen(url)
         data = json.loads(response.read())
@@ -308,7 +312,7 @@ class Movie:
             self.__runtime_minutes = int(runtime_minutes)
 
     def __repr__(self):
-        return f"<Movie {self.__title}, {self.__release_year}>"
+        return f"<Movie {self.title}, {self.release_year}>"
 
     def __eq__(self, other):
         return self.__title == other.__title and self.__release_year == other.__release_year
@@ -338,7 +342,7 @@ class Movie:
             self.__genres.pop(self.__genres.index(genre))
     
     def add_comment(self, other):
-        self.__comments.append(other)
+        self.comments.append(other)
 
 class Review:
     
@@ -355,6 +359,7 @@ class Review:
         self.__review_text = review_text
         self.__timestamp = datetime.now()
         self.__user = user
+        self.__user_id = None
     
     def __repr__(self):
         return f"<Review {self.__movie}>"
@@ -365,6 +370,14 @@ class Review:
     @property 
     def user(self):
         return self.__user
+
+    @property
+    def article_id(self):
+        return self.movie.id
+    
+    @property
+    def user_id(self):
+        return self.__user_id
 
     @property
     def movie(self):
@@ -386,7 +399,21 @@ class Review:
     def user(self, other):
         self.__user = other
 
+    @movie.setter
+    def movie(self, other):
+        self.__movie = other
 
+    @review_text.setter
+    def review_text(self, other):
+        self.__review_text = other    
+
+    @rating.setter
+    def rating(self, other):
+        self.__rating = other       
+
+    @user.setter
+    def user(self, other):
+        self.__user = other
 class Tag:
     def __init__(self, tag_name: str):
         self._tag_name: str = tag_name
@@ -422,6 +449,10 @@ class ModelException(Exception):
 
 def make_comment(comment_text: str, user: User, article: Movie, rating : str):
     comment = Review(article, user, comment_text, rating)
+    comment.movie = article
+    comment.user = user.username
+    comment.review_text = comment_text
+    comment.rating = rating
     user.add_review(comment)
     article.add_comment(comment)
 

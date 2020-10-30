@@ -27,11 +27,6 @@ def all_movies(page_number):
     tag = request.args.get('sort')
     #article_to_show_comments = request.args.get('view_comments_for')
 
-    # Fetch the first and last articles in the series.
-    first_article = services.get_first_article(repo.repo_instance)
-    last_article = services.get_last_article(repo.repo_instance)
-
-
     # if article_to_show_comments is None:
     #     # No view-comments query parameter, so set to a non-existent article id.
     #     article_to_show_comments = -1
@@ -71,6 +66,7 @@ def all_movies(page_number):
           #  article['add_comment_url'] = url_for('news_bp.comment_on_article', article=article['id'])
 
         # Generate the webpage to display the articles.
+
         return render_template(
             'news/articles.html',
             title='Articles',
@@ -110,16 +106,15 @@ def comment_on_article(id):
     form = CommentForm()
         # Successful POST, i.e. the comment text has passed data validation.
         # Extract the article id, representing the commented article, from the form.
-    try:
-        article_id = int(id)
+    
+    article_id = int(id)
 
-        # Use the service layer to store the new comment.
-        services.add_comment(article_id, review_text, username, rating, repo.repo_instance)
+    # Use the service layer to store the new comment.
+    services.add_comment(article_id, review_text, username, rating, repo.repo_instance)
 
-        # Retrieve the article in dict form.
-        article = services.get_article(article_id, repo.repo_instance)
-    except:
-        pass
+    # Retrieve the article in dict form.
+    article = services.get_article(article_id, repo.repo_instance)
+
     # Ignore error and continue
 
     return redirect(url_for('news_bp.display_movie', movie_id=id))

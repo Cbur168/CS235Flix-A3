@@ -59,7 +59,7 @@ def get_all_movies(n, repo: AbstractRepository, search="", tag='title'):
     # Convert Articles to dictionary form.
     articles_dto = articles_to_dict(articles)
 
-    return articles_dto
+    return articles
 
 
 def get_article_ids_for_tag(tag_name, repo: AbstractRepository):
@@ -102,7 +102,7 @@ def article_to_dict(article: Article):
         'revenue' : article.revenue,
         'metascore' : article.metascore,
         'image_hyperlink': article.image_hyperlink,
-        'comments': comments_to_dict(article.comments),
+      #  'comments': comments_to_dict(article.comments),
         # 'tags': tags_to_dict(article.tags)
     }
     return article_dict
@@ -116,10 +116,10 @@ def articles_to_dict(articles: Iterable[Article]):
 
 def comment_to_dict(comment: Comment):
     comment_dict = {
-        'username': comment.user.username,
-        'article_id': comment.movie.id,
-        'comment_text': comment.review_text,
-        'timestamp': comment.timestamp
+        'user': comment.user,
+        'article_id': comment.article_id,
+        'review_text': comment.review_text,
+        'rating' : comment.rating
     }
     return comment_dict
 

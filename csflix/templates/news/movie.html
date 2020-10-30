@@ -33,7 +33,7 @@
     {{movie.description}}
     <br><hr class="bar"><br>
     {% for comment in movie.comments %}
-        <p>"{{comment.review_text}}", by {{comment.user.username}} with rating {{comment.rating}} sent at {{comment.timestamp.strftime("%x %X")}}</p>
+        <p>"{{comment.review_text}}", by User: {{comment.user_id}} with rating {{comment.rating}}/10</p>
     {% endfor %}
 </div>
 </main>

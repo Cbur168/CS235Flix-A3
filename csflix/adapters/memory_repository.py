@@ -58,6 +58,7 @@ class MemoryRepository(AbstractRepository):
             return self._articles_by_page[int(n)]
         except:
             return
+            
     def get_number_of_articles(self):
         return len(self._articles)
 

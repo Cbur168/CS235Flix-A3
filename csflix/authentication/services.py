@@ -27,6 +27,8 @@ def add_user(username: str, password: str, repo: AbstractRepository):
 
     # Create and store the new User, with password encrypted.
     user = User(username, password_hash)
+    user.username = username
+    user.password = password_hash
     repo.add_user(user)
 
 

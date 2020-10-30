@@ -30,7 +30,7 @@ def create_app(test_config=None):
 
     # Here the "magic" of our repository pattern happens. We can easily switch between in memory data and
     # persistent database data storage for our application.
-
+    
     if app.config['REPOSITORY'] == 'memory':
         # Create the MemoryRepository instance for a memory-based repository.
         repo.repo_instance = memory_repository.MemoryRepository()
